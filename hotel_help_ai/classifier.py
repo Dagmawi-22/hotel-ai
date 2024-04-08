@@ -1,4 +1,5 @@
 import spacy
+from nltk.corpus import wordnet
 
 class IntentClassifier:
     def __init__(self):
@@ -6,10 +7,15 @@ class IntentClassifier:
 
     def classify_intent(self, query):
         doc = self.nlp(query)
-
         intent = self._classify_intent_from_query(doc)
-
         return intent
+
+    def _get_synonyms(self, word):
+        synonyms = set()
+        for syn in wordnet.synsets(word):
+            for lemma in syn.lemmas():
+                synonyms.add(lemma.name().lower())
+        return synonyms
 
     def _classify_intent_from_query(self, doc):
         intents = {
@@ -18,13 +24,14 @@ class IntentClassifier:
             "check_availability": ["available", "availability"],
             "room_service_request": ["service", "request", "room"],
             "amenities_inquiry": ["amenities"],
-            "local_attractions": ["attraction", "site"],
+            "local_attractions": ["attraction", "site", "sites"],
             "restaurant_reservations": ["reservations", "restaurant", "reserve", "res"]
         }
 
         for token in doc:
             for intent, keywords in intents.items():
-                if any(keyword in token.text.lower() for keyword in keywords):
-                    return intent
+                for keyword in keywords:
+                    if token.text.lower() == keyword.lower() or token.text.lower() in self._get_synonyms(keyword):
+                        return intent
 
         return "unknown"
