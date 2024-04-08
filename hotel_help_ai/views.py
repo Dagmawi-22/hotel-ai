@@ -8,6 +8,10 @@ def chatbot(request):
         data = request.POST
         user_query = data.get('query', '')
 
+        if not user_query: 
+            return response_handler('query can not be empty', False, 400)
+
+
         # Initialize intent classifier
         intent_classifier = IntentClassifier()
 
@@ -20,12 +24,14 @@ def chatbot(request):
         # Generate response based on intent
         response = generate_response(intent)
 
-        return JsonResponse({
+        data =  JsonResponse({
+            'question':  user_query,
             'response': response,
-            'question': user_query
             })
+
+        return response_handler(data, True, 200)
     else:
-        return JsonResponse({'error': 'Invalid request method'}, status=400)
+        return response_handler('Invalid request method', False, 422)
 
 def generate_response(intent):
     # Generate response based on intent
@@ -41,7 +47,16 @@ def generate_response(intent):
         response = "You might enjoy visiting these local attractions..."
     elif intent == 'restaurant_reservations':
         response = "Would you like to make a reservation at our restaurant?"
+    elif intent == 'hi':
+        response = "Hi there."
     else:
         response = "I'm sorry, I didn't understand that."
 
     return response
+
+def response_handler(data, success, statusCode):
+     return JsonResponse({
+            'data':  data,
+            'success': success,
+            'statusCode': statusCode
+            })

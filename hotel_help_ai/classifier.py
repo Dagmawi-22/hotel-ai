@@ -18,6 +18,7 @@ class IntentClassifier:
         # Define intent classification rules based on linguistic patterns, entities, or keywords
         intents = {
             "book_room": ["book", "reserve", "room"],
+            "hi": ["hey", "hi", "hi there"],
             "check_availability": ["available", "availability"],
             "room_service_request": ["service", "request", "room"],
             "amenities_inquiry": ["amenities"],
