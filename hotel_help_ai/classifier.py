@@ -15,6 +15,13 @@ class IntentClassifier:
         for syn in wordnet.synsets(word):
             for lemma in syn.lemmas():
                 synonyms.add(lemma.name().lower())
+                
+                if '_' in lemma.name():  
+                    compound_word = lemma.name().replace('_', ' ')
+                    if compound_word.endswith('s'):
+                        synonyms.add(compound_word.lower())
+                else:  
+                    synonyms.add(lemma.name().lower() + 's')
         return synonyms
 
     def _classify_intent_from_query(self, doc):
@@ -23,15 +30,17 @@ class IntentClassifier:
             "hi": ["hey", "hi", "hi there"],
             "check_availability": ["available", "availability"],
             "room_service_request": ["service", "request", "room"],
-            "amenities_inquiry": ["amenities"],
-            "local_attractions": ["attraction", "site", "sites"],
-            "restaurant_reservations": ["reservations", "restaurant", "reserve", "res"]
+            "amenities_inquiry": ["amenity"],
+            "local_attractions": ["attraction", "site"],
+            "restaurant_reservations": ["reservation", "restaurant", "reserve", "res"]
         }
 
         for token in doc:
             for intent, keywords in intents.items():
                 for keyword in keywords:
-                    if token.text.lower() == keyword.lower() or token.text.lower() in self._get_synonyms(keyword):
-                        return intent
+                    keyword_forms = [keyword, keyword + 's']  
+                    for form in keyword_forms:
+                        if token.text.lower() == form.lower() or token.text.lower() in self._get_synonyms(form):
+                            return intent
 
         return "unknown"
