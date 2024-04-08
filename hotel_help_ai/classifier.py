@@ -18,7 +18,7 @@ class IntentClassifier:
             "check_availability": ["available", "availability"],
             "room_service_request": ["service", "request", "room"],
             "amenities_inquiry": ["amenities"],
-            "local_attractions": ["attractions"],
+            "local_attractions": ["attraction", "site"],
             "restaurant_reservations": ["reservations", "restaurant", "reserve", "res"]
         }
 

@@ -1,7 +1,20 @@
 from django.http import JsonResponse
 from .classifier import IntentClassifier
 from django.views.decorators.csrf import csrf_exempt
+from spellchecker import SpellChecker
 import random
+
+
+
+
+
+def correct_spelling(sentence):
+    spell = SpellChecker()
+    words = sentence.split()
+    corrected_words = [spell.correction(word) for word in words]
+    corrected_sentence = ' '.join(corrected_words)
+    return corrected_sentence
+
 
 
 @csrf_exempt
@@ -12,11 +25,14 @@ def chatbot(request):
 
         if not user_query: 
             return response_handler('query can not be empty', False, 400)
+        
+        user_query = correct_spelling(user_query)
 
         intent_classifier = IntentClassifier()
 
         intent = intent_classifier.classify_intent(user_query)
         
+        print("User query:", user_query)
         print("Detected Intent:", intent)
 
         response = generate_response(intent)
