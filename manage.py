@@ -6,6 +6,10 @@ import sys
 
 def main():
     """Run administrative tasks."""
+    # Add the directory containing your Django project to the Python path
+    BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    sys.path.append(BASE_DIR)
+
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'hotel_help_ai.settings')
     try:
         from django.core.management import execute_from_command_line
