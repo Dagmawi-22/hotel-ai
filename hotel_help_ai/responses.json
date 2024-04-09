@@ -11,6 +11,10 @@
     "Need a room booked? I'm here to help. Give me your check-in and check-out dates.",
     "Let's book a room! Just share your check-in and check-out dates with me."
   ],
+  "branch_details": [
+    "Please, find the detailed info about our branches...",
+    "We have about 120 branches so far and..."
+  ],
   "check_availability": [
     "Checking room availability...",
     "Let me check the availability of rooms for you.",

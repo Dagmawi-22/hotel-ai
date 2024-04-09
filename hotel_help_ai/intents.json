@@ -5,5 +5,6 @@
   "room_service_request": ["service", "request", "room"],
   "amenities_inquiry": ["amenity"],
   "local_attractions": ["attraction", "site"],
-  "restaurant_reservations": ["reservation", "restaurant", "reserve", "res"]
+  "restaurant_reservations": ["reservation", "restaurant", "reserve", "res"],
+  "branch_details": ["branch", "number"]
 }
