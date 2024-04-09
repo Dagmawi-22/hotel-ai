@@ -1,7 +1,8 @@
+import os
+import json
 import spacy
 from nltk.corpus import wordnet
-import json
-import os
+from collections import defaultdict
 
 class IntentClassifier:
     def __init__(self):
@@ -34,11 +35,17 @@ class IntentClassifier:
         return synonyms
 
     def _classify_intent_from_query(self, doc):
+        intent_scores = defaultdict(int)
         for token in doc:
             for intent, keywords in self.intents.items():
                 for keyword in keywords:
                     keyword_forms = [keyword, keyword + 's']  
                     for form in keyword_forms:
                         if token.text.lower() == form.lower() or token.text.lower() in self._get_synonyms(form):
-                            return intent
-        return "unknown"
+                            intent_scores[intent] += 1  
+        
+        if intent_scores:
+            max_intent = max(intent_scores, key=intent_scores.get)
+            return max_intent
+        else:
+            return "unknown"

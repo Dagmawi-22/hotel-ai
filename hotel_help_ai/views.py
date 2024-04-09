@@ -1,11 +1,10 @@
-from django.http import JsonResponse
 from .classifier import IntentClassifier
 from django.views.decorators.csrf import csrf_exempt
 from spellchecker import SpellChecker
 import random
 import os
 import json
-
+from .helper_views import response_handler
 
 
 def correct_spelling(sentence):
@@ -57,14 +56,4 @@ def generate_response(intent):
 
     return response
 
-def response_handler(data, success, statusCode):
-    if isinstance(data, dict):
-        serialized_data = data
-    else:
-        serialized_data = {'message': data}
 
-    return JsonResponse({
-        'data':  serialized_data,
-        'success': success,
-        'statusCode': statusCode
-    })

@@ -1,9 +1,10 @@
 {
   "book_room": ["book", "reserve", "room"],
-  "hi": ["hey", "hi", "hi there"],
+  "greeting": ["hey", "hi", "hi there"],
   "check_availability": ["available", "availability"],
   "room_service_request": ["service", "request", "room"],
   "amenities_inquiry": ["amenity"],
   "local_attractions": ["attraction", "site"],
-  "restaurant_reservations": ["reservation", "restaurant", "reserve", "res"]
+  "restaurant_reservations": ["reservation", "restaurant", "reserve", "res"],
+  "branch_details": ["branch", "number", "branches"]
 }
