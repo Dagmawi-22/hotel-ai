@@ -1,9 +1,18 @@
 import spacy
 from nltk.corpus import wordnet
+import json
+import os
 
 class IntentClassifier:
     def __init__(self):
         self.nlp = spacy.load("en_core_web_sm")
+        self.intents = self._load_intents()
+
+    def _load_intents(self):
+        file_path = os.path.join(os.path.dirname(__file__), 'intents.json')
+        with open(file_path) as file:
+            intents = json.load(file)
+        return intents
 
     def classify_intent(self, query):
         doc = self.nlp(query)
@@ -25,22 +34,11 @@ class IntentClassifier:
         return synonyms
 
     def _classify_intent_from_query(self, doc):
-        intents = {
-            "book_room": ["book", "reserve", "room"],
-            "hi": ["hey", "hi", "hi there"],
-            "check_availability": ["available", "availability"],
-            "room_service_request": ["service", "request", "room"],
-            "amenities_inquiry": ["amenity"],
-            "local_attractions": ["attraction", "site"],
-            "restaurant_reservations": ["reservation", "restaurant", "reserve", "res"]
-        }
-
         for token in doc:
-            for intent, keywords in intents.items():
+            for intent, keywords in self.intents.items():
                 for keyword in keywords:
                     keyword_forms = [keyword, keyword + 's']  
                     for form in keyword_forms:
                         if token.text.lower() == form.lower() or token.text.lower() in self._get_synonyms(form):
                             return intent
-
         return "unknown"

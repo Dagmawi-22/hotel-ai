@@ -7,7 +7,7 @@ from .views import chatbot
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path("chatbot/", chatbot, name="chatbot_api"),
+    path("api/v1/chatbot/", chatbot, name="chatbot_api"),
 ]
 
 
