@@ -1,32 +1,25 @@
 from .classifier import IntentClassifier
 from django.views.decorators.csrf import csrf_exempt
-from spellchecker import SpellChecker
 import random
 import os
 import json
 from .helper_views import response_handler
-
-
-def correct_spelling(sentence):
-    spell = SpellChecker()
-    words = sentence.split()
-    corrected_words = [spell.correction(word) for word in words]
-    corrected_sentence = ' '.join(corrected_words)
-    return corrected_sentence
+from .utils import correct_spelling
 
 @csrf_exempt
 def chatbot(request):
     if request.method == 'POST':
-        data = request.POST
+        # Decode the request body and load it as JSON
+        data = json.loads(request.body.decode('utf-8'))
+        print("Data received:", data)
         user_query = data.get('query', '')
 
         if not user_query: 
-            return response_handler('query can not be empty', False, 400)
+            return response_handler('Query cannot be empty', False, 400)
         
         user_query = correct_spelling(user_query)
-
+        
         intent_classifier = IntentClassifier()
-
         intent = intent_classifier.classify_intent(user_query)
         
         print("User query:", user_query)
@@ -38,12 +31,11 @@ def chatbot(request):
             'question':  user_query,
             'response': response,
         }
-
+       
         return response_handler(data, True, 200)
     else:
         return response_handler('Invalid request method. Supported method for this route: POST', False, 422)
-
-
+    
 def generate_response(intent):
     responses_file_path = os.path.join(os.path.dirname(__file__), 'responses.json')
     with open(responses_file_path) as file:
@@ -55,5 +47,3 @@ def generate_response(intent):
         response = random.choice(responses['default'])
 
     return response
-
-
