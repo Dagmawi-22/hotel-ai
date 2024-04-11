@@ -15,37 +15,61 @@ class IntentClassifier:
             intents = json.load(file)
         return intents
 
+    def _update_intents_json(self, updated_intents):
+        file_path = os.path.join(os.path.dirname(__file__), 'intents.json')
+        with open(file_path, 'w') as file:
+            json.dump(updated_intents, file, indent=2)
+
     def classify_intent(self, query):
         doc = self.nlp(query)
-        intent = self._classify_intent_from_query(doc)
-        return intent
+        intent, confidence = self._classify_intent_from_query(doc)
+        response_dict = {
+            "intent": intent,
+            "confidence": confidence
+        }
+        return response_dict
 
     def _get_synonyms(self, word):
         synonyms = set()
         for syn in wordnet.synsets(word):
             for lemma in syn.lemmas():
-                synonyms.add(lemma.name().lower())
-                
-                if '_' in lemma.name():  
-                    compound_word = lemma.name().replace('_', ' ')
+                synonym = lemma.name().lower()
+                synonyms.add(synonym)
+                if '_' in synonym:  
+                    compound_word = synonym.replace('_', ' ')
                     if compound_word.endswith('s'):
                         synonyms.add(compound_word.lower())
                 else:  
-                    synonyms.add(lemma.name().lower() + 's')
+                    synonyms.add(synonym + 's')
         return synonyms
 
     def _classify_intent_from_query(self, doc):
         intent_scores = defaultdict(int)
+        updated_intents = self.intents.copy()
+        total_words = 0
         for token in doc:
-            for intent, keywords in self.intents.items():
-                for keyword in keywords:
-                    keyword_forms = [keyword, keyword + 's']  
-                    for form in keyword_forms:
-                        if token.text.lower() == form.lower() or token.text.lower() in self._get_synonyms(form):
-                            intent_scores[intent] += 1  
+            total_words += 1
+            for intent, words_dict in self.intents.items():
+                primary_words = words_dict.get("primary", [])
+                secondary_words = words_dict.get("secondary", [])
+                all_words = primary_words + secondary_words
+                for word in all_words:
+                    if token.text.lower() == word.lower() or token.text.lower() in self._get_synonyms(word):
+                        if intent_scores[intent] == 0:
+                            intent_scores[intent] = len(primary_words) + len(secondary_words)
+                        else:
+                            intent_scores[intent] += 1
+                        if token.text.lower() not in primary_words and token.text.lower() not in secondary_words:
+                            updated_intents[intent]["secondary"].append(token.text.lower())
         
         if intent_scores:
-            max_intent = max(intent_scores, key=intent_scores.get)
-            return max_intent
+            max_score = max(intent_scores.values())
+            max_intents = [intent for intent, score in intent_scores.items() if score == max_score]
+            if len(max_intents) == 1:
+                confidence = (max_score / total_words) * 100
+                return max_intents[0], confidence
+            else:
+                return max_intents, None  
         else:
-            return "unknown"
+            return "unknown", None  
+        self._update_intents_json(updated_intents)

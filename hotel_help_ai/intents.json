@@ -1,10 +1,34 @@
 {
-  "book_room": ["book", "reserve", "room"],
-  "greeting": ["hey", "hi", "hi there"],
-  "check_availability": ["available", "availability"],
-  "room_service_request": ["service", "request", "room"],
-  "amenities_inquiry": ["amenity"],
-  "local_attractions": ["attraction", "site"],
-  "restaurant_reservations": ["reservation", "restaurant", "reserve", "res"],
-  "branch_details": ["branch", "number", "branches"]
+  "book_room": {
+    "primary": ["book", "reserve", "room"],
+    "secondary": ["how", "read", "study", "novel"]
+  },
+  "greeting": {
+    "primary": ["hey", "hi", "hi there"],
+    "secondary": ["greet", "salute", "welcome"]
+  },
+  "check_availability": {
+    "primary": ["available", "availability"],
+    "secondary": ["check", "verify", "confirm"]
+  },
+  "room_service_request": {
+    "primary": ["service", "request", "room"],
+    "secondary": ["help", "assist", "aid"]
+  },
+  "amenities_inquiry": {
+    "primary": ["amenity"],
+    "secondary": ["facility", "feature", "service"]
+  },
+  "local_attractions": {
+    "primary": ["attraction", "site"],
+    "secondary": ["place", "destination", "point of interest"]
+  },
+  "restaurant_reservations": {
+    "primary": ["reservation", "restaurant", "reserve"],
+    "secondary": ["book", "schedule", "arrange"]
+  },
+  "branch_details": {
+    "primary": ["branch", "number", "branches"],
+    "secondary": ["limb", "subdivision", "segment"]
+  }
 }
