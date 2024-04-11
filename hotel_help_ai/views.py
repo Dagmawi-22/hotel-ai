@@ -20,22 +20,27 @@ def chatbot(request):
         user_query = correct_spelling(user_query)
         
         intent_classifier = IntentClassifier()
-        intent = intent_classifier.classify_intent(user_query)
+        intent_response = intent_classifier.classify_intent(user_query)
         
         print("User query:", user_query)
-        print("Detected Intent:", intent)
+        print("Detected Intent:", intent_response['intent'])
 
-        response = generate_response(intent)
-
-        data = {
+        response_data = {
             'question':  user_query,
-            'response': response,
+            'intent': intent_response['intent'],
         }
-       
-        return response_handler(data, True, 200)
+        
+        if 'confidence' in intent_response:
+            response_data['confidence'] = intent_response['confidence']
+        
+        response = generate_response(intent_response['intent'])
+
+        response_data['response'] = response
+
+        return response_handler(response_data, True, 200)
     else:
         return response_handler('Invalid request method. Supported method for this route: POST', False, 422)
-    
+
 def generate_response(intent):
     responses_file_path = os.path.join(os.path.dirname(__file__), 'responses.json')
     with open(responses_file_path) as file:
