@@ -1,10 +1,10 @@
 {
   "book_room": {
     "primary": ["book", "reserve", "room"],
-    "secondary": ["how", "read", "study", "novel"]
+    "secondary": ["how", "check-in", "check-out"]
   },
   "greeting": {
-    "primary": ["hey", "hi", "hi there"],
+    "primary": ["hey", "hi", "greeting"],
     "secondary": ["greet", "salute", "welcome"]
   },
   "check_availability": {

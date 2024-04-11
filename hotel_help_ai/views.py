@@ -9,7 +9,6 @@ from .utils import correct_spelling
 @csrf_exempt
 def chatbot(request):
     if request.method == 'POST':
-        # Decode the request body and load it as JSON
         data = json.loads(request.body.decode('utf-8'))
         print("Data received:", data)
         user_query = data.get('query', '')
