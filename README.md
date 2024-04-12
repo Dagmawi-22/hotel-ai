@@ -7,5 +7,6 @@
 #### nltk
 #### pyspellchecker
 
-![image](https://github.com/Dagmawi-22/hotel-ai/assets/109204719/e723bb44-239a-401e-82f9-1d5cf53982a8)
+![image](https://github.com/Dagmawi-22/hotel-ai/assets/109204719/c279a434-1069-4d5c-9c4b-72d58172c087)
+
 
