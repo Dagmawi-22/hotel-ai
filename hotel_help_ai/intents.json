@@ -45,7 +45,15 @@
     "secondary": ["have a", "have", "good", "catch you later"]
   },
   "thanks": {
-    "primary": ["nice", "good", "thank", "thanks", "cheers", "kudos", "props"],
+    "primary": [
+      "nice",
+      "excellent",
+      "thank",
+      "thanks",
+      "cheers",
+      "kudos",
+      "props"
+    ],
     "secondary": [
       "very",
       "lot",

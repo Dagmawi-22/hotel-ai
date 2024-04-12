@@ -113,3 +113,8 @@ class IntentClassifier:
         if requester_ip in self.intent_memory:
             del self.intent_memory[requester_ip]
             self._update_intent_memory()
+    # def clear_current_intent(self, requester_ip):
+    # if requester_ip in self.intent_memory:
+    #     del self.intent_memory[requester_ip]
+    #     self._update_intent_memory()
+
