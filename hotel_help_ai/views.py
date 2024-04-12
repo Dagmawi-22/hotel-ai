@@ -16,16 +16,18 @@ def chatbot(request):
         if not user_query: 
             return response_handler('Query cannot be empty', False, 400)
         
-        user_query = correct_spelling(user_query)
+        corrected_user_query = correct_spelling(user_query)
         
         intent_classifier = IntentClassifier()
-        intent_response = intent_classifier.classify_intent(user_query)
+        requester_ip = request.META.get('REMOTE_ADDR', '')
+        intent_response = intent_classifier.classify_intent(corrected_user_query, requester_ip)
         
         print("User query:", user_query)
         print("Detected Intent:", intent_response['intent'])
 
         response_data = {
-            'question':  user_query,
+            'original_question':  user_query,
+            'corrected_question':  corrected_user_query,
             'intent': intent_response['intent'],
         }
         
