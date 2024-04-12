@@ -98,5 +98,29 @@
     "Sorry, I didn't get that. Can you provide more context?",
     "I'm a bit confused. Can you give me more details?",
     "I'm not sure what you mean. Can you elaborate?"
+  ],
+  "bye": [
+    "Goodbye! Take care.",
+    "See you later! Have a great day.",
+    "Farewell! Until we meet again.",
+    "Bye for now! Feel free to return anytime.",
+    "Take it easy! See you around.",
+    "Adios! Stay safe out there.",
+    "Catch you later! Don't hesitate to come back.",
+    "So long! It's been a pleasure chatting with you.",
+    "Until next time! Wishing you all the best.",
+    "Bye-bye! Remember, I'm here whenever you need assistance."
+  ],
+  "thanks": [
+    "You're welcome! Happy to assist.",
+    "No problem at all! Glad I could help.",
+    "You're very welcome! It's my pleasure.",
+    "Don't mention it! Always here to lend a hand.",
+    "Anytime! Let me know if you need anything else.",
+    "It was my pleasure! Feel free to ask if you need more help.",
+    "You're welcome! That's what I'm here for.",
+    "No worries! Happy to be of service.",
+    "Not a problem at all! Always happy to help out.",
+    "You're welcome! Take care."
   ]
 }

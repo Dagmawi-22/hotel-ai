@@ -3,7 +3,7 @@ from django.views.decorators.csrf import csrf_exempt
 import random
 import os
 import json
-from .helper_views import response_handler
+from .helper_views import response_handler, get_client_ip
 from .utils import correct_spelling
 
 @csrf_exempt
@@ -19,7 +19,7 @@ def chatbot(request):
         corrected_user_query = correct_spelling(user_query)
         
         intent_classifier = IntentClassifier()
-        requester_ip = request.META.get('REMOTE_ADDR', '')
+        requester_ip = get_client_ip(request)
         intent_response = intent_classifier.classify_intent(corrected_user_query, requester_ip)
         
         print("User query:", user_query)

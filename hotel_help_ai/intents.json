@@ -43,5 +43,19 @@
       "so long"
     ],
     "secondary": ["have a", "have", "good", "catch you later"]
+  },
+  "thanks": {
+    "primary": ["nice", "good", "thank", "thanks", "cheers", "kudos", "props"],
+    "secondary": [
+      "very",
+      "lot",
+      "you",
+      "your",
+      "help",
+      "assistance",
+      "support",
+      "time",
+      "kindness"
+    ]
   }
 }
