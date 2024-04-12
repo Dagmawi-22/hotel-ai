@@ -30,5 +30,18 @@
   "branch_details": {
     "primary": ["branch", "number", "branches"],
     "secondary": ["limb", "subdivision", "segment"]
+  },
+  "bye": {
+    "primary": [
+      "bye",
+      "day",
+      "night",
+      "evening",
+      "later",
+      "take care",
+      "ciao",
+      "so long"
+    ],
+    "secondary": ["have a", "have", "good", "catch you later"]
   }
 }
