@@ -20,7 +20,7 @@
     "secondary": ["facility", "feature", "service"]
   },
   "local_attractions": {
-    "primary": ["attraction", "site"],
+    "primary": ["attraction", "site", "sites"],
     "secondary": ["place", "destination", "point of interest"]
   },
   "restaurant_reservations": {
@@ -55,6 +55,7 @@
       "props"
     ],
     "secondary": [
+      "have a",
       "very",
       "lot",
       "you",
