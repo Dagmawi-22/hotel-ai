@@ -3,7 +3,7 @@ from django.views.decorators.csrf import csrf_exempt
 import random
 import os
 import json
-from .helper_views import response_handler, get_client_ip
+from .helper_views import response_handler, respond_with_greetings, get_client_ip
 from .utils import correct_spelling
 
 @csrf_exempt
@@ -23,7 +23,7 @@ def chatbot(request):
         intent_response = intent_classifier.classify_intent(corrected_user_query, requester_ip)
         
         print("User query:", user_query)
-        print("Detected Intent:", intent_response['intent'])
+        print("Detected Intent:", intent_response)
 
         response_data = {
             'original_question':  user_query,
@@ -33,10 +33,14 @@ def chatbot(request):
         
         if 'confidence' in intent_response:
             response_data['confidence'] = intent_response['confidence']
+        if 'greet' in intent_response:
+            response_data['greet'] = intent_response['greet']
         
         response = generate_response(intent_response['intent'])
 
         response_data['response'] = response
+        if intent_response['greet']:
+            return respond_with_greetings(response_data, True, 700)
 
         return response_handler(response_data, True, 200)
     else:
