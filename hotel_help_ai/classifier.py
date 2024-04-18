@@ -32,7 +32,7 @@ class IntentClassifier:
 
     def classify_intent(self, query, requester_ip):
         doc = self.nlp(query)
-        detected_intent, confidence = self._classify_intent_from_query(doc, requester_ip)
+        detected_intent, confidence, greet = self._classify_intent_from_query(doc, requester_ip)
 
         if detected_intent.lower() == 'bye':
             self.clear_current_intent(requester_ip)
@@ -42,11 +42,11 @@ class IntentClassifier:
 
         stored_intent = self._get_current_intent(requester_ip)
         if detected_intent != 'unknown':
-            return {"intent": detected_intent, "confidence": confidence}
+            return {"intent": detected_intent, "confidence": confidence, "greet": greet}
         elif stored_intent:
-            return {"intent": stored_intent, "confidence": 100}
+            return {"intent": stored_intent, "confidence": 100, "greet": greet}
         else:
-            return {"intent": "unknown", "confidence": None}
+            return {"intent": "unknown", "confidence": None, "greet": greet}
 
     def _get_synonyms(self, word):
         synonyms = set()
@@ -67,6 +67,7 @@ class IntentClassifier:
         total_words = 0
         detected_intent = "unknown"
         confidence = None
+        greet = False
 
         # First pass to classify intents
         for token in doc:
@@ -82,23 +83,27 @@ class IntentClassifier:
                         else:
                             intent_scores[intent] += 1
 
-        # If any intent other than greetings is detected, prioritize it
         if intent_scores:
+            if "greeting" in intent_scores:
+                print("Greeting intent found with a score of:", intent_scores)
+                greet = True
             max_score = max(intent_scores.values())
             max_intents = [intent for intent, score in intent_scores.items() if score == max_score]
             if len(max_intents) == 1:
+                print("got this", max_intents)
                 detected_intent = max_intents[0]
             elif "greetings" in max_intents:
+                greet = True
+                print("greeeet", greet)
                 max_intents.remove("greetings")
                 detected_intent = max_intents[0]
 
-            # Calculate confidence
             if detected_intent != "unknown":
                 confidence = (intent_scores[detected_intent] / total_words) * 100
                 confidence = min(confidence, 100)
 
-            # If greetings were detected, check for additional intents to prioritize them
             if detected_intent == "greetings":
+                greet = True
                 intent_scores.pop("greetings", None)
                 if intent_scores:
                     max_score = max(intent_scores.values())
@@ -116,7 +121,7 @@ class IntentClassifier:
             self._set_current_intent(requester_ip, detected_intent)
             self._update_intent_memory()
 
-        return detected_intent, confidence
+        return detected_intent, confidence, greet
 
 
     def _get_current_intent(self, requester_ip):
