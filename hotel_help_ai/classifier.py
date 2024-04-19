@@ -69,19 +69,18 @@ class IntentClassifier:
         confidence = None
         greet = False
 
-        # First pass to classify intents
+    # First pass to classify intents
         for token in doc:
             total_words += 1
             for intent, words_dict in self.intents.items():
                 primary_words = words_dict.get("primary", [])
                 secondary_words = words_dict.get("secondary", [])
                 all_words = primary_words + secondary_words
-                for word in all_words:
-                    if token.text.lower() == word.lower() or token.text.lower() in self._get_synonyms(word):
-                        if intent_scores[intent] == 0:
-                            intent_scores[intent] = len(primary_words) + len(secondary_words)
-                        else:
-                            intent_scores[intent] += 1
+                if token.text.lower() in (primary_words + [syn for word in primary_words for syn in self._get_synonyms(word)]):
+                    if intent_scores[intent] == 0:
+                        intent_scores[intent] = len(primary_words) + len(secondary_words)
+                    else:
+                        intent_scores[intent] += 1
 
         if intent_scores:
             if "greeting" in intent_scores:
@@ -116,10 +115,10 @@ class IntentClassifier:
                             confidence = (intent_scores[detected_intent] / total_words) * 100
                             confidence = min(confidence, 100)
 
-        current_intent = self._get_current_intent(requester_ip)
-        if current_intent and detected_intent != current_intent:
-            self._set_current_intent(requester_ip, detected_intent)
-            self._update_intent_memory()
+            current_intent = self._get_current_intent(requester_ip)
+            if current_intent and detected_intent != current_intent:
+                self._set_current_intent(requester_ip, detected_intent)
+                self._update_intent_memory()
 
         return detected_intent, confidence, greet
 
