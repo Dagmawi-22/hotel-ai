@@ -40,7 +40,8 @@ def chatbot(request):
 
         response_data['response'] = response
         if intent_response['greet']:
-            return respond_with_greetings(response_data, True, 700)
+            if intent_response['intent'] != "greeting":
+                return respond_with_greetings(response_data, True, 200)
 
         return response_handler(response_data, True, 200)
     else:
